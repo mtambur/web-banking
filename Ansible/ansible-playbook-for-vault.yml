@@ -1,0 +1,10 @@
+- name: Print secret message from encrypted vault file
+  hosts: all
+  vars_files:
+    - test-vault.yml
+  tasks:
+    - name: Secret Message
+      debug:
+        msg: "{{ message }}"
+    - pause:
+        seconds: "{{ pauseInSec }}"

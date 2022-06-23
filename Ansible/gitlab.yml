@@ -1,0 +1,28 @@
+---
+
+- hosts: all
+  tasks:
+
+    - name: Confirm that 503 Unavailable response is returned
+      uri:
+        url: "https://cddirector.io/cdd/execution/00000000-0000-0000-0000-000000000000/v1/releases-execution/1/phases-execution/1"
+        method: PATCH
+        headers:
+              Authorization: "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VybmFtZSI6Im9mZXIueWFuaXZAYnJvYWRjb20ub2t0YS5jb20iLCJ0ZW5hbnRJZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsInVzZXJJZCI6NiwianRpIjoiNmQwNzk1OTMtMTYzMC00OGRkLWFlOWMtMGU2NWE5NTEzYzY1IiwiZXhwIjoxNjQyNzg0MTMwfQ.J9WVLEs4a800vhl9iSQd8ZXQf4-LRxPPirtJvbTAf4zTqARyfwOEg_bcaxGNeFB_dyjLiTQUEImlgs6brYWgMQ"
+              Content-Type: "application/json"
+        body_format: json
+        body:
+              "{\"status\":\"RUNNING\"}"
+        status_code: 200
+        
+    - name: Wait for HTTP 200 or 401
+      uri:
+        url: "https://cddirector.io/cdd/execution/00000000-0000-0000-0000-000000000000/v1/releases-execution/1/phases-execution/1"
+        method: GET
+        headers:
+              Authorization: "Bearer eyJhbGciOiJIUzUxMiJ9.eyJ1c2VybmFtZSI6Im9mZXIueWFuaXZAYnJvYWRjb20ub2t0YS5jb20iLCJ0ZW5hbnRJZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsInVzZXJJZCI6NiwianRpIjoiNmQwNzk1OTMtMTYzMC00OGRkLWFlOWMtMGU2NWE5NTEzYzY1IiwiZXhwIjoxNjQyNzg0MTMwfQ.J9WVLEs4a800vhl9iSQd8ZXQf4-LRxPPirtJvbTAf4zTqARyfwOEg_bcaxGNeFB_dyjLiTQUEImlgs6brYWgMQ"
+        status_code: 200
+      retries: 30
+      delay: 5
+      register: result
+      until: result.json.data.status != 'RUNNING'

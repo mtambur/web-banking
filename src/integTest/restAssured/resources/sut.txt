@@ -1,0 +1,5 @@
+HOST=lvntest002925.bpc.broadcom.net
+PORT=8080
+SCHEME=http
+CONTEXT_SUFFIX=/Web-Banking-ESD
+SERVER_URL=${SCHEME}://${HOST}:${PORT}/

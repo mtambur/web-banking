@@ -1,0 +1,26 @@
+---
+- hosts: all
+  vars: 
+      gitlab_service: "https://gitlab.com"
+  tasks:
+    - name: Create a new pipeline for Mobile IT project
+      uri:
+        url: "{{ gitlab_service }}/api/v4/projects/{{ gitlab_project_id }}/trigger/pipeline?token={{ gitlab_trigger_token }}&ref={{ gitlab_branch }}"
+        method: POST
+        body_format: "form-urlencoded"
+        body:
+              variables[CUSTOM_TRIGGER]: "YES"
+        status_code: 201
+      register: pipeline_trigger
+
+    - name: Wait for pipeline final status
+      uri:
+        url: "{{ gitlab_service }}/api/v4/projects/{{ gitlab_project_id }}/pipelines/{{ pipeline_trigger.json.id }}"
+        method: GET
+        headers:
+              PRIVATE-TOKEN: "{{ gitlab_personal_access_token }}"
+        status_code: 200
+      retries: 17280
+      delay: 5
+      register: pipeline
+      until: pipeline.json.status != 'running' and pipeline.json.status != 'pending' and pipeline.json.status != 'waiting_for_resource' and pipeline.json.status != 'preparing'

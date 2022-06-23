@@ -1,0 +1,21 @@
+# Gradle
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+ 
+- task: sendNotificationToCDD@0
+  inputs:
+    cddEndpoint: 'cddirector.io'
+    application: 'repoNameAsApplicationName'
+    applicationVersion: 'branchNameAsVersion'
+    cddTokens: '{"token-1":"$(Build.BuildId)", "token-2":"$(Build.BuildNumber)"}'
+    notificationExecutionStrategy: 'executeExistingRelease'
+
+# Build your Java project and run tests with Gradle using a Gradle wrapper script.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
