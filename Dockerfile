@@ -16,7 +16,7 @@ RUN usermod -l $USER_NAME -d $USER_HOME -m `getent passwd $USER_ID | cut -d: -f1
 
 
 ENV TOMCAT_HOME /usr/local/apache-tomcat
-ENV REPOSITORY_URL https://cdd.testing:AKCp5fUDkXHzQzdHJk2bnp85sBqgfPx2knVRT7nWWQMGUo3jkmSAhEU9Groaitq3AYEKrY2i7@artifactory-lvn.broadcom.net:443/artifactory
+ENV REPOSITORY_URL https://cdd.testing:@artifactory-lvn.broadcom.net:443/artifactory
 ENV CT_AGENT_URL esd-cdd-maven-integration-local/ct_agent/master/ct_agent/2.1-SNAPSHOT/ct_agent-2.1-SNAPSHOT.jar
 ENV JAVA_OPTS=' -javaagent:$CDD_HOME_FOLDER/ct_agent.jar'
 
